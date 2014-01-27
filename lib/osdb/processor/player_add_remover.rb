@@ -4,7 +4,8 @@ module OSDb
     class PlayerAddRemover
       
       def process(body)
-        puts('coucou')
+        body.sub(/\n\r\n.*\n.*\n.*Best\ watched\ using\ Open\ Subtitles\ MKV\ Player/, "")
       end
     end
   end
+end
