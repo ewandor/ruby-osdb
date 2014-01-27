@@ -13,4 +13,6 @@ module OSDb
   autoload :Server,         "#{base_path}/server"
   autoload :Sub,            "#{base_path}/sub"
   autoload :SubtitleFinder, "#{base_path}/subtitle_finder"
+  autoload :PostProcessor,  "#{base_path}/post_processor"
+  autoload :Processor,      "#{base_path}/processor"
 end

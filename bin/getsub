@@ -64,7 +64,7 @@ class GetSub
         end
 
         if sub = subtitle_finder.find_sub_for(movie_file, @options[:language])
-          download_sub!(sub, movie_file)
+          download_sub!(sub, movie_file, post_processor)
         else
           puts "* No sub found"
         end
@@ -101,6 +101,14 @@ class GetSub
 
   def subtitle_finder
     @subtitle_finder ||= OSDb::SubtitleFinder.new(search_engines, finders, selectors)
+  end
+
+  def post_processor
+    @post_processor ||= OSDb::PostProcessor.new(processors)
+  end
+
+  def processors
+    @processors = [OSDb::Processor::PlayerAddRemover.new()]
   end
 
   SEARCH_ENGINES = {
@@ -141,7 +149,7 @@ class GetSub
     ) 
   end
 
-  def download_sub!(sub, movie_file)
+  def download_sub!(sub, movie_file, post_processor)
     local_path = movie_file.sub_path(sub.format)
     print "* download #{sub.url} to #{local_path} ... "
     content = sub.body
@@ -150,6 +158,8 @@ class GetSub
       return
     end
 
+    content = post_processor.process(content)
+ 
     File.open(movie_file.sub_path(sub.format), 'w+') do |file|
       file.write(content)
     end
