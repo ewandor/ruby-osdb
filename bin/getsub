@@ -113,6 +113,9 @@ class GetSub
     @processors = []
     if @options[:remove_add]
       @processors.<< OSDb::Processor::PlayerAddRemover.new()
+    end
+
+    return @processors
   end
 
   SEARCH_ENGINES = {
@@ -162,7 +165,7 @@ class GetSub
       return
     end
 
-    content = post_processor.process(content)
+    content = post_processor.process(content, sub.format)
  
     File.open(movie_file.sub_path(sub.format), 'w+') do |file|
       file.write(content)

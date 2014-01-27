@@ -6,9 +6,9 @@ module OSDb
       @processors = processors
     end
     
-    def process(body)
+    def process(body, type)
       @processors.each do |processor|
-        body = processor.process(body)
+        body = processor.process(body, type)
       end
       return body
     end
